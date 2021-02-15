@@ -1,0 +1,35 @@
+﻿@* Pages\BlazorIntermediate\ChildComponent.razor *@
+
+<div>
+    <div class="alert alert-info">@Title</div>
+    <div class="alert alert-warning">
+        @if (ChildContent == null)
+        {
+            <span>Render Fragment is empty</span>
+        }
+        else
+        {
+            <p>@ChildContent</p>
+        }
+        @if (MyNamedContent == null)
+        {
+            <span>MyNamedContent Render Fragment is empty</span>
+        }
+        else
+        {
+            <p class="text-danger font-weight-bold">@MyNamedContent</p>
+        }
+    </div>
+    <button class="btn btn-danger" @onclick="OnClickButtonMethod">Button to be clicked!</button>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public RenderFragment MyNamedContent { get; set; }
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClickButtonMethod { get; set; }
+}

@@ -5,7 +5,7 @@
     <h4 class="text-secondary">Amenity - @Amenity.Id</h4>
     @Amenity.AmenityName <br />
     @Amenity.AmenityDescription <br />
-
+    RF from Parent - @AmenityRF1 &nbsp; @AmenityRF2 <br />
     @*<EditDeleteButton IsAdmin="false" />*@
 </div>
 
@@ -13,8 +13,12 @@
     [Parameter]
     public BlazorAmenity Amenity { get; set; }
     [Parameter]
-    public EventCallback<string> OnAmenitySelection { get; set; }    @*Callback Event Parameter*@
-    @* <bool> - parameter of RoomSelectionCounterChanged(bool isRoomSelected) *@
+    public EventCallback<string> OnAmenitySelection { get; set; }@*Callback Event Parameter*@
+
+    [Parameter]
+    public RenderFragment AmenityRF1 { get; set; }
+    [Parameter]
+    public RenderFragment AmenityRF2 { get; set; }
 
     //Invoke the Parent's method - AmenitySelectionChanged
     protected async Task AmenitySelectionChanged(MouseEventArgs e, string amenityName)

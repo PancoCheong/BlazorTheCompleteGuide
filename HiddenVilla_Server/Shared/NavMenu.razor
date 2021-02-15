@@ -1,4 +1,5 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@* Shared\NavMenu.razor *@
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">HiddenVilla_Server</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -35,6 +36,11 @@
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="lifecycle">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Life Cycle
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ParentComponent">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Parent/Child Relation
             </NavLink>
         </li>
     </ul>

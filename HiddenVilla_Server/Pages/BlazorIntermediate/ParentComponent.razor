@@ -1,0 +1,21 @@
+﻿@* Pages\BlazorIntermediate\ParentComponent.razor *@
+@page "/ParentComponent"
+<h3 class="text-danger">Parent-Child Component</h3>
+
+<ChildComponent OnClickButtonMethod="ShowMessage" Title="This title is passed as parameter from Parent Component">
+    <ChildContent>Use Render Fragment From Parent, default name is ChildContent that can be omitted</ChildContent>
+    <MyNamedContent>Give a customized name if more than one Render Fragment</MyNamedContent>
+</ChildComponent>
+<p>@messageText</p>
+
+<ChildComponent Title="This is the second title with empty content">
+</ChildComponent>
+
+@code {
+    private string messageText = "";
+
+    private void ShowMessage(MouseEventArgs e)
+    {
+        messageText = "Button in Child Component is clicked";
+    }
+}

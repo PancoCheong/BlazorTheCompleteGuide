@@ -2,7 +2,7 @@
 @page "/demohotel"
 @using Model
 @*@using HiddenVilla_Server.Pages.BlazorBasic.MyComponents*@
-<h3>We will display hotel rooms and amenitities here!</h3>  
+<h3>We will display hotel rooms and amenitities here!</h3>
 <div class="border p-2 mt-2" style="background-color:azure">
     <h3 class="text-info">Room List [Using Component]</h3><br />
     <h4 class="text-info">Hotel Room's</h4>
@@ -19,7 +19,10 @@
     <div class="row container">
         @foreach (var amenity in AmenityList)
         {
-            <IndividualAmenity OnAmenitySelection="UpdateAmenitySelection" Amenity="@amenity" />
+            <IndividualAmenity OnAmenitySelection="UpdateAmenitySelection" Amenity="@amenity">
+                <AmenityRF1>#1</AmenityRF1>
+                <AmenityRF2>#2</AmenityRF2>
+            </IndividualAmenity>
         }
     </div>
 </div>
@@ -42,7 +45,7 @@
             Price = 100.00,
             IsActive = false,
             RoomProps = new List<BlazorRoomProp>
-            {
+        {
                 new BlazorRoomProp{Id=1, Name="Sq Ft", Value="100"},
                 new BlazorRoomProp{Id=2, Name="Occupancy", Value="3"}
             }
@@ -54,7 +57,7 @@
             Price = 70.00,
             IsActive = false,
             RoomProps = new List<BlazorRoomProp>
-            {
+        {
                 new BlazorRoomProp{Id=1, Name="Sq Ft", Value="70"},
                 new BlazorRoomProp{Id=2, Name="Occupancy", Value="2"}
             }
