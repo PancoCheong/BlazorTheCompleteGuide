@@ -1,0 +1,61 @@
+﻿@* Pages\BlazorBasic\MyComponent\LifeCycleComponent.razor *@
+<div class="bg-info p-2 m-0">
+    <h4>LifeCycle Component</h4>
+
+    <p>Count Value: @CountValue</p>
+
+    @foreach (var item in EventType)
+    {
+        @item
+        <br />
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int CountValue { get; set; }
+
+    List<string> EventType = new List<string>();
+    string firstRenderStr = "";
+
+    protected override void OnInitialized()
+    {
+        EventType.Add(CountValue + " - Component OnInitialized is called");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        EventType.Add(CountValue + " - Component OnInitializedAync is called");
+        await Task.Delay(1000);
+    }
+
+    protected override void OnParametersSet()
+    {
+        EventType.Add(CountValue + " - Component OnParametersSet is called");
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        EventType.Add(CountValue + " - Component OnParametersSetAsync is called");
+        await Task.Delay(1000);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        firstRenderStr = firstRender ? "First Render" : "Non-first Render";
+        EventType.Add(CountValue + " - Component OnAfterRender is called - " + firstRenderStr);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        firstRenderStr = firstRender ? "First Render" : "Non-first Render";
+        EventType.Add(CountValue + " - Component OnAfterRenderAsync is called - " + firstRenderStr);
+        await Task.Delay(1000);
+    }
+
+    protected override bool ShouldRender()
+    {
+        EventType.Add(CountValue + " - Component ShouldRender is called");
+        return true;
+    }
+}

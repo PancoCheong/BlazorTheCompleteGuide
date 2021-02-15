@@ -1,0 +1,10 @@
+﻿@*Pages\BlazorBasic\MyComponents\EditDeleteButton.razor*@
+@if (IsAdmin)     @* display buttons if the parament IsAdmin is true *@
+{
+    <button type="button" class="btn btn-danger">Delete</button>
+    <button type="button" class="btn btn-primary">Edit</button>
+}
+@code{
+    [Parameter]
+    public bool IsAdmin { get; set; }
+}

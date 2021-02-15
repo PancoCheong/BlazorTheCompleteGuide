@@ -1,0 +1,94 @@
+﻿@* Pages\BlazorBasic\LifeCycle.razor *@
+@page "/lifecycle"
+@using System.Threading
+
+<h4>LifeCycle</h4>
+
+<div class="border bg-light p-2 m-2">
+    Current count: @currentCount &nbsp;
+    <button class="btn btn-primary" @onclick="IncrementCount">Click me</button><br />
+    @Count &nbsp; <button class="btn btn-primary" @onclick="StartCountdown">Start Countdown</button>
+</div>
+
+<div class="border bg-light p-2 m-2">
+    <LifeCycleComponent CountValue="@currentCount" />
+</div>
+
+@foreach (var item in EventType)
+{
+    @item
+    <br />
+}
+
+@code {
+    private int currentCount = 0;
+
+    List<string> EventType = new List<string>();
+    string firstRenderStr = "";
+    private int Count { get; set; } = 5; //test StateHasChanged()
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    protected override void OnInitialized()
+    {
+        EventType.Add(currentCount + " - OnInitialized is called" + " - Count:" + Count);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        EventType.Add(currentCount + " - OnInitializedAync is called" + " - Count:" + Count);
+        await Task.Delay(1000);
+    }
+
+    protected override void OnParametersSet()
+    {
+        EventType.Add(currentCount + " - OnParametersSet is called" + " - Count:" + Count);
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        EventType.Add(currentCount + " - OnParametersSetAsync is called" + " - Count:" + Count);
+        await Task.Delay(1000);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        //if (firstRender)
+        // currentCount = 111;
+        //else
+        // currentCount = 999;
+        firstRenderStr = firstRender ? "First Render" : "Non-first Render";
+        EventType.Add(currentCount + " - OnAfterRender is called - " + firstRenderStr + " - Count:" + Count);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        firstRenderStr = firstRender ? "First Render" : "Non-first Render";
+        EventType.Add(currentCount + " - OnAfterRenderAsync is called - " + firstRenderStr + " - Count:" + Count);
+        await Task.Delay(1000);
+    }
+
+    protected override bool ShouldRender()
+    {
+        // this execute at least once
+        EventType.Add(currentCount + " - ShouldRender is called" + " - Count:" + Count);
+        return true; //if return false, the UI will not render
+    }
+
+    void StartCountdown() //test StateHasChanged()
+    {
+        var timer = new Timer(TimeCallBack, null, 1000, 1000);
+    }
+
+    void TimeCallBack(object state)
+    {
+        if (Count > 0)
+        {
+            Count--;
+            InvokeAsync(StateHasChanged);
+        }
+    }
+}

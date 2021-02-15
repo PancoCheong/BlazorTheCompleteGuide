@@ -1,0 +1,25 @@
+﻿@*Pages\BlazorBasic\MyComponents\IndividualAmenitie.razor*@
+@using Model
+<div class="bg-light border p-2 col-5 m-2 offset-1" @onclick="(args)=> AmenitySelectionChanged(args, Amenity.AmenityName)">
+    @*pass in the amenity name along with mouse click event*@
+    <h4 class="text-secondary">Amenity - @Amenity.Id</h4>
+    @Amenity.AmenityName <br />
+    @Amenity.AmenityDescription <br />
+
+    @*<EditDeleteButton IsAdmin="false" />*@
+</div>
+
+@code {
+    [Parameter]
+    public BlazorAmenity Amenity { get; set; }
+    [Parameter]
+    public EventCallback<string> OnAmenitySelection { get; set; }    @*Callback Event Parameter*@
+    @* <bool> - parameter of RoomSelectionCounterChanged(bool isRoomSelected) *@
+
+    //Invoke the Parent's method - AmenitySelectionChanged
+    protected async Task AmenitySelectionChanged(MouseEventArgs e, string amenityName)
+    {
+        // amenityName is passed along with the Mouse onclick event
+        await OnAmenitySelection.InvokeAsync(amenityName);
+    }
+}
