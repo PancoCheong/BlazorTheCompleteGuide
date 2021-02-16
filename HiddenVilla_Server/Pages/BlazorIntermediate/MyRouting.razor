@@ -1,0 +1,21 @@
+﻿@* Pages\BlazorIntermediate\MyRouting.razor *@
+@page "/myrouting"
+@page "/newrouting"
+@page "/myrouting/{parameter1}"
+@page "/myrouting/{parameter1}/{parameter2}"
+
+<h3>My Routing</h3>
+<h4>Parameter 1 : @Parameter1</h4>
+<h4>Parameter 2 : @Parameter2</h4>
+
+<NavLink class="btn btn-primary" href="MyRoutingAdvance?Param1=Panco&Param2=Cheong">
+    <span class="oi oi-list-rich" aria-hidden="true"></span> Routing with Query Parameters
+</NavLink>
+
+@code {
+    [Parameter]
+    public string Parameter1 { get; set; }
+
+    [Parameter]
+    public string Parameter2 { get; set; }
+}

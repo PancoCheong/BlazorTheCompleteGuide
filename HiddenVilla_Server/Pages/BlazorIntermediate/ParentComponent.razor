@@ -8,14 +8,34 @@
 </ChildComponent>
 <p>@messageText</p>
 
-<ChildComponent Title="This is the second title with empty content">
-</ChildComponent>
+<CascadingValue Value="messageForGrandChild" Name="MessageFromGrandParent">
+    <CascadingValue Value="@LuckyNumber" Name="GrandParentsLuckyNumber">
+        <ChildComponent Title="This is the second title with empty content">
+        </ChildComponent>
+    </CascadingValue>
+</CascadingValue>
+
+<AttributeSplattingComponent placeholder="PlaceHolder from Parent" required="required" maxLength="5">
+    <!--InputAttributes="InputAttributesFromParent"> ver.2-->
+    <!--Placeholder="Enter the Room Name from Parent" Required="required" MaxLength="5"> ver.1-->
+</AttributeSplattingComponent>
 
 @code {
+    private string messageForGrandChild = "This is a message from Grand Parent thru Cascading Parameter";
+    public string LuckyNumber { get; set; } = "7";
     private string messageText = "";
 
     private void ShowMessage(MouseEventArgs e)
     {
         messageText = "Button in Child Component is clicked";
     }
+
+    ////Attribute Splatting - ver.2
+    //[Parameter]
+    //public Dictionary<string, object> InputAttributesFromParent { get; set; } = new Dictionary<string, object>()
+    //{
+    // {"required", "required" },
+    // {"placeholder", "Enter the Room Name From Parent" },
+    // {"maxlength", 5 }
+    //};
 }

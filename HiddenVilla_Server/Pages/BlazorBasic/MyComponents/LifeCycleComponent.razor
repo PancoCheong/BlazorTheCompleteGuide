@@ -1,4 +1,6 @@
 ﻿@* Pages\BlazorBasic\MyComponent\LifeCycleComponent.razor *@
+@using System.Threading
+
 <div class="bg-info p-2 m-0">
     <h4>LifeCycle Component</h4>
 
@@ -20,42 +22,55 @@
 
     protected override void OnInitialized()
     {
-        EventType.Add(CountValue + " - Component OnInitialized is called");
+        EventType.Add(CountValue + " | Component OnInitialized is called |" + " | | " + GetTimestamp(DateTime.Now));
+        Thread.Sleep(200);
     }
 
     protected override async Task OnInitializedAsync()
     {
-        EventType.Add(CountValue + " - Component OnInitializedAync is called");
+        EventType.Add(CountValue + " | Component OnInitializedAync is called |" + " | | " + GetTimestamp(DateTime.Now));
+        Thread.Sleep(200);
         await Task.Delay(1000);
     }
 
     protected override void OnParametersSet()
     {
-        EventType.Add(CountValue + " - Component OnParametersSet is called");
+        EventType.Add(CountValue + " | Component OnParametersSet is called |" + " | | " + GetTimestamp(DateTime.Now));
+        Thread.Sleep(200);
     }
 
     protected override async Task OnParametersSetAsync()
     {
-        EventType.Add(CountValue + " - Component OnParametersSetAsync is called");
+        EventType.Add(CountValue + " | Component OnParametersSetAsync is called |" + " | | " + GetTimestamp(DateTime.Now));
+        Thread.Sleep(200);
         await Task.Delay(1000);
     }
 
     protected override void OnAfterRender(bool firstRender)
     {
         firstRenderStr = firstRender ? "First Render" : "Non-first Render";
-        EventType.Add(CountValue + " - Component OnAfterRender is called - " + firstRenderStr);
+        EventType.Add(CountValue + " | Component OnAfterRender is called | " + firstRenderStr + " | | " + GetTimestamp(DateTime.Now));
+        Thread.Sleep(200);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         firstRenderStr = firstRender ? "First Render" : "Non-first Render";
-        EventType.Add(CountValue + " - Component OnAfterRenderAsync is called - " + firstRenderStr);
+        EventType.Add(CountValue + " | Component OnAfterRenderAsync is called | " + firstRenderStr + " | | " + GetTimestamp(DateTime.Now));
+        Thread.Sleep(200);
         await Task.Delay(1000);
     }
 
     protected override bool ShouldRender()
     {
-        EventType.Add(CountValue + " - Component ShouldRender is called");
+        EventType.Add(CountValue + " | Component ShouldRender is called | " + " | | " + GetTimestamp(DateTime.Now));
+        Thread.Sleep(200);
         return true;
+    }
+
+    public static string GetTimestamp(DateTime value)
+    {
+        //return value.ToString("yyyy-MM-dd_HH:mm:ss_ffff"); 
+        return value.ToString("HH:mm:ss_ffffff");
     }
 }

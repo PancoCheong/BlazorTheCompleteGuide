@@ -1,0 +1,32 @@
+﻿@* Pages\BlazorIntermediate\AttributeSplattingComponent.razor *@
+
+<div>
+    <h4 class="text-primary" pt-3>Attribute Splatting Child Component</h4>
+    <input type="text" id="roomName" class="form-control" 
+           @attributes="InputAttributes" placeholder="override the parent's value, must be on the right-hand side of attributes "/>
+           <!--placeholder="@Placeholder" required="@Required" maxlength="@MaxLength"  /> ver.1-->
+    @*allow Parent component to override the setting*@
+</div>
+
+
+@code {
+    ////use attributes splatting to avoid to set Parameter for each attribute - ver.1
+    //[Parameter]
+    //public string Placeholder { get; set; } = "Please input here";
+    //[Parameter]
+    //public string Required { get; set; } = "required";
+    //[Parameter]
+    //public string MaxLength { get; set; } = "10";
+
+    ////Attribute Splatting - ver.2
+    //[Parameter]
+    //public Dictionary<string, object> InputAttributes { get; set; } = new Dictionary<string, object>()
+    //{
+    //    {"required", "required" },
+    //    {"placeholder", "Please input here" },
+    //    {"maxlength", 10 }
+    //};
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> InputAttributes { get; set; } = new Dictionary<string, object>();
+}

@@ -1,0 +1,21 @@
+﻿@* Pages\BlazorIntermediate\GrandChildComponent.razor *@
+<div class="border mt-2">
+    <div class="row">
+        <h4 class="text-primary pl-4 pt-2 col-12">Grand Child Component</h4>
+    </div>
+    <div class="row">
+        <p class="pl-4 ml-2">These is a message - @MessageForGrandChild</p><br />
+        <p class="pl-4 ml-2">Lucky Number - @LuckyNumberFromGrandParent</p>
+    </div>
+</div>
+
+@code {
+    //[Parameter]
+    //public string MessageForGrandChild { get; set; }
+
+    [CascadingParameter(Name = "MessageFromGrandParent")]
+    public string MessageForGrandChild { get; set; } //data type must be the same (ie. string)
+
+    [CascadingParameter(Name = "GrandParentsLuckyNumber")]
+    public string LuckyNumberFromGrandParent { get; set; } //variable name doesn't matter
+}

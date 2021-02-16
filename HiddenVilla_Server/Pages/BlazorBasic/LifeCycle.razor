@@ -34,47 +34,54 @@
 
     protected override void OnInitialized()
     {
-        EventType.Add(currentCount + " - OnInitialized is called" + " - Count:" + Count);
+        EventType.Add(currentCount + " | OnInitialized is called |" + " | Count:" + Count + " | " + GetTimestamp(DateTime.Now));
+        Thread.Sleep(200);
     }
 
     protected override async Task OnInitializedAsync()
     {
-        EventType.Add(currentCount + " - OnInitializedAync is called" + " - Count:" + Count);
+        EventType.Add(currentCount + " | OnInitializedAync is called |" + " | Count:" + Count + " | " + GetTimestamp(DateTime.Now));
+        Thread.Sleep(200);
         await Task.Delay(1000);
     }
 
     protected override void OnParametersSet()
     {
-        EventType.Add(currentCount + " - OnParametersSet is called" + " - Count:" + Count);
+        EventType.Add(currentCount + " | OnParametersSet is called |" + " | Count:" + Count + " | " + GetTimestamp(DateTime.Now));
+        Thread.Sleep(200);
     }
 
     protected override async Task OnParametersSetAsync()
     {
-        EventType.Add(currentCount + " - OnParametersSetAsync is called" + " - Count:" + Count);
+        EventType.Add(currentCount + " | OnParametersSetAsync is called |" + " | Count:" + Count + " | " + GetTimestamp(DateTime.Now));
+        Thread.Sleep(200);
         await Task.Delay(1000);
     }
 
     protected override void OnAfterRender(bool firstRender)
     {
-        //if (firstRender)
-        // currentCount = 111;
-        //else
-        // currentCount = 999;
+        if (firstRender)
+            currentCount = 111;
+        else
+            currentCount = 999;
         firstRenderStr = firstRender ? "First Render" : "Non-first Render";
-        EventType.Add(currentCount + " - OnAfterRender is called - " + firstRenderStr + " - Count:" + Count);
+        EventType.Add(currentCount + " | OnAfterRender is called | " + firstRenderStr + " | Count:" + Count + " | " + GetTimestamp(DateTime.Now));
+        Thread.Sleep(200);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         firstRenderStr = firstRender ? "First Render" : "Non-first Render";
-        EventType.Add(currentCount + " - OnAfterRenderAsync is called - " + firstRenderStr + " - Count:" + Count);
+        EventType.Add(currentCount + " | OnAfterRenderAsync is called | " + firstRenderStr + " | Count:" + Count + " | " + GetTimestamp(DateTime.Now));
+        Thread.Sleep(200);
         await Task.Delay(1000);
     }
 
     protected override bool ShouldRender()
     {
         // this execute at least once
-        EventType.Add(currentCount + " - ShouldRender is called" + " - Count:" + Count);
+        EventType.Add(currentCount + " | ShouldRender is called |" + " | Count:" + Count + " | " + GetTimestamp(DateTime.Now));
+        Thread.Sleep(200);
         return true; //if return false, the UI will not render
     }
 
@@ -90,5 +97,11 @@
             Count--;
             InvokeAsync(StateHasChanged);
         }
+    }
+
+    public static string GetTimestamp(DateTime value)
+    {
+        //return value.ToString("yyyy-MM-dd_HH:mm:ss_ffff");
+        return value.ToString("HH:mm:ss_ffffff");
     }
 }

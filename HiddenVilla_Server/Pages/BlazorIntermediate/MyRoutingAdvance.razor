@@ -1,0 +1,31 @@
+﻿@* Pages\BlazorIntermediate\MyRoutingAdvance.razor *@
+@page "/MyRoutingAdvance"
+@inject NavigationManager NavigationManager
+
+<h3>My Routing Advance</h3>
+<h4>Param 1 : @Param1</h4>
+<h4>Param 2 : @Param2</h4>
+<p>
+    <button class="btn btn-primary" @onclick="LoadParameters">Load Parameters</button>
+    @*<a href="/MyRouting/77/88" class="btn btn-secondary">Back to Routing</a>*@
+    @*<NavLink href="/MyRouting/77/88" class="btn btn-secondary">Back to Routing</NavLink>*@
+    <button class="btn btn-secondary" @onclick="BackToRouting">Back to Routing via Nav Mgr</button>
+
+</p>
+@code {
+    private string Param1;
+    private string Param2;
+
+    private void LoadParameters()
+    {
+        var absoluteUri = new Uri(NavigationManager.Uri);
+        var queryParam = System.Web.HttpUtility.ParseQueryString(absoluteUri.Query);
+        Param1 = queryParam["Param1"];
+        Param2 = queryParam["Param2"];
+    }
+
+    private void BackToRouting()
+    {
+        NavigationManager.NavigateTo("myrouting");
+    }
+}
