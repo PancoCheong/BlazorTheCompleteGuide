@@ -1,5 +1,6 @@
 ﻿// Business
 // Repository\IHotelRoomRepository.cs
+using AutoMapper;
 using Business.Repository.IRepository;
 using DataAccess.Data;
 using Models;
@@ -15,16 +16,23 @@ namespace Business.Repository
     {
         //using dependency injection to extract the DbContext
         private readonly ApplicationDbContext _db;
+        private readonly IMapper _mapper;
 
-        public HotelRoomRepository(ApplicationDbContext db)
+        public HotelRoomRepository(ApplicationDbContext db, IMapper mapper)
         {
+            _mapper = mapper;
             _db = db;             
         }
         
-        public Task<HotelRoomDTO> CreateHotelRoom(HotelRoomDTO hotelRoomDTO)
+        public async Task<HotelRoomDTO> CreateHotelRoom(HotelRoomDTO hotelRoomDTO)
         {
-            var addedHotelRoom = _db.HotelRooms.Add(hotelRoomDTO); //how to convert DTO to model object, use Auto-mapper
-
+            HotelRoom hotelRoom = _mapper.Map<HotelRoomDTO, HotelRoom>(hotelRoomDTO);
+            hotelRoom.CreatedDate = DateTime.Now;
+            //To Do
+            hotelRoom.CreatedBy = "";
+            var addedHotelRoom = await _db.HotelRooms.AddAsync(hotelRoom); //how to convert DTO to model object, use Auto-mapper
+            await _db.SaveChangesAsync();
+            return _mapper.Map<HotelRoom, HotelRoomDTO>(addedHotelRoom.Entity);
         }
 
         public Task<IEnumerable<HotelRoomDTO>> GetAllHotelRooms()
