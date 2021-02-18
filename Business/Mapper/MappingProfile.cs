@@ -1,9 +1,9 @@
-﻿// Business.AutoMapper.MappingProfile.cs
+﻿// Business.Mapper.MappingProfile.cs
 using AutoMapper;
 using DataAccess.Data;
 using Models;
 
-namespace Business.AutoMapper
+namespace Business.Mapper
 {
     public class MappingProfile : Profile
     {
