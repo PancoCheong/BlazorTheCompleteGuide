@@ -1,5 +1,5 @@
 ﻿@* Pages\BlazorIntermediate\ChildComponent.razor *@
-
+@inject IJSRuntime JsRuntime
 <div>
     <div class="alert alert-info">@Title</div>
     <div class="alert alert-warning">
@@ -37,4 +37,9 @@
     public EventCallback<MouseEventArgs> OnClickButtonMethod { get; set; }
     //[Parameter]
     //public string MessageForGrandChild { get; set; }
+
+    public async Task ShowToastrSuccess() 
+    {
+        await JsRuntime.ToastrSuccess("Success Alert on the Child Component, how to invoke from ParentComponent?");
+    }
 }

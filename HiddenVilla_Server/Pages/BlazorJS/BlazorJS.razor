@@ -1,0 +1,106 @@
+﻿@*Pages\BlazorJS\BlazorJS.razor*@
+@page "/BlazorJS"
+@* Instance of Java Script Object *@
+@inject IJSRuntime  JsRuntime
+
+<h3>Blazor JavaScript</h3>
+
+<div class="row m-2">
+    <button class="btn btn-secondary" @onclick="(()=>TestConfirmBox(confirmMessage))">Test Confirm Button</button>
+</div>
+<div class="row">
+    @if (ConfirmResult)
+    {
+        <p>Confirmation has been made!</p>
+    }
+    else
+    {
+        <p>Confirmation Pending!</p>
+    }
+</div>
+<div class="row m-2">
+    <button class="btn btn-success m-1" @onclick="TestSuccess">Test Toastr Success</button>
+    <button class="btn btn-danger m-1" @onclick="TestFailure">Test Toastr Failure</button>
+</div>
+<div class="row m-2">
+    <button class="btn btn-success m-1" @onclick="TestSuccessExtension">Test Toastr Success Extension</button>
+    <button class="btn btn-danger m-1" @onclick="TestFailureExtension">Test Toastr Failure Extension</button>
+</div>
+<div class="row m-2">
+    <button class="btn btn-success m-1" @onclick="TestSuccessSweetAlert">Test SweetAlert Success</button>
+    <button class="btn btn-danger m-1" @onclick="TestFailureSweetAlert">Test SweetAlert Failure</button>
+</div>
+<div class="row m-2">
+    <button class="btn btn-light m-1" @onclick="DisplaySimpleAlert">Test SweetAlert Simple</button>
+    <button class="btn btn-warning m-1" @onclick="DisplayWarningAlert">Test SweetAlert Warning</button>
+</div>
+<div class="row m-2">
+    <button class="btn btn-danger m-1" @onclick="DisplayConfirm">Test SweetAlert Confirm</button><br />
+    <div>
+        @if (ConfirmResult)
+        {
+            <p>Confirmation has been made!</p>
+        }
+        else
+        {
+            <p>Confirmation Pending!</p>
+        }
+    </div>
+</div>
+
+@code {
+    private string confirmMessage = "Are you sure you want to click?";
+    private bool ConfirmResult { get; set; }
+
+    @*2 types of calling JSRuntime - 1. has return 2. has no return *@
+    private async Task TestConfirmBox(string message)
+    {
+        //confirm box - return the Boolean status
+        ConfirmResult = await JsRuntime.InvokeAsync<bool>("confirm", message);
+    }
+
+    @* success and error - no return *@
+    private async Task TestSuccess()
+    {
+        // success alert - no return
+        await JsRuntime.InvokeVoidAsync("ShowToastr", "success", "My success message");
+    }
+    private async Task TestFailure()
+    {
+        // failure alert - no return
+        await JsRuntime.InvokeVoidAsync("ShowToastr", "error", "My error message");
+    }
+
+    private async Task TestSuccessExtension()
+    {
+        await JsRuntime.ToastrSuccess("My success message using Extension");
+    }
+    private async Task TestFailureExtension()
+    {
+        await JsRuntime.ToastrError("My error message using Extension");
+    }
+
+    private async Task TestSuccessSweetAlert()
+    {
+        await JsRuntime.SweetAlertSuccess("My success message using SweetAlert2");
+    }
+    private async Task TestFailureSweetAlert()
+    {
+        await JsRuntime.SweetAlertError("My error message using SweetAlert2");
+    }
+
+    private async Task DisplaySimpleAlert()
+    {
+        await JsRuntime.DisplayMessage("My Simple Message");
+    }
+
+    private async Task DisplayWarningAlert()
+    {
+        await JsRuntime.DisplayMessage("My Title", "My Warning Message", SweetAlertType.warning);
+    }
+
+    private async Task DisplayConfirm()
+    {
+        ConfirmResult = await JsRuntime.DisplayConfirmDialog("My Title", confirmMessage, SweetAlertType.question);
+    }
+}
