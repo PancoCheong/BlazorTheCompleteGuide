@@ -3,6 +3,7 @@
 @using Models
 @using Business.Repository.IRepository
 @inject IHotelRoomRepository HotelRoomRepository
+@inject IJSRuntime JsRuntime
 
 <div class="row mt-4">
     <div class="col-8">
@@ -34,7 +35,10 @@
                             <td>@room.Occupancy</td>
                             <td>@room.RegularRate.ToString("c")</td>
                             <td>@room.SqFt</td>
-                            <td>Edit Delete</td>
+                            <td>
+                                <NavLink href="@($"hotel-room/edit/{room.Id}")" class="btn btn-primary">Edit</NavLink>
+                                <button class="btn btn-danger" @onclick="()=>HandleDeleteRoom(room.Id)">Delete</button>
+                            </td>
                         </tr>
                     }
                 }
@@ -49,11 +53,39 @@
     </div>
 </div>
 
+<DeleteConfirmation></DeleteConfirmation>
+
 @code {
     private IEnumerable<HotelRoomDTO> HotelRooms { get; set; } = new List<HotelRoomDTO>();
+    private int? DeleteRoomId { get; set; } = null;
 
     protected override async Task OnInitializedAsync()
     {
         HotelRooms = await HotelRoomRepository.GetAllHotelRooms();
+    }
+
+    //for testing the modal only
+    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    await JsRuntime.InvokeVoidAsync("ShowDeleteConfirmationModal");
+    //}
+
+    private async Task HandleDeleteRoom(int roomId)
+    {
+        DeleteRoomId = roomId;
+        await JsRuntime.InvokeVoidAsync("ShowDeleteConfirmationModal");
+    }
+
+    public async Task ConfirmDelete_Click(bool isConfirmed)
+    {
+        if (isConfirmed && DeleteRoomId != null)
+        {
+            await HotelRoomRepository.DeleteHotelRoom(DeleteRoomId.Value);
+            await JsRuntime.ToastrSuccess("Hotel Room is deleted Successfully");
+
+            //reload the pages
+            HotelRooms = await HotelRoomRepository.GetAllHotelRooms();
+        }
+        await JsRuntime.InvokeVoidAsync("HideDeleteConfirmationModal");
     }
 }

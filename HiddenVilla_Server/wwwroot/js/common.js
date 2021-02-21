@@ -1,5 +1,6 @@
-// wwwroot\js\common.js
-window.ShowToastr = (type, message) => {
+// HiddenVilla_Server\wwwroot\js\common.js
+function ShowToastr(type, message) {
+//window.ShowToastr = (type, message) => {
     if (type === "success") {
         // Display a success, with a title
         toastr.success(message, 'Operation Successful');
@@ -40,4 +41,13 @@ window.CustomConfirmDialog = (title, message, type) => {
             }
         });
     });
+}
+
+
+function ShowDeleteConfirmationModal() {
+    $('#deleteConfirmationModal').modal('show');
+}
+
+function HideDeleteConfirmationModal() {
+    $('#deleteConfirmationModal').modal('hide');
 }

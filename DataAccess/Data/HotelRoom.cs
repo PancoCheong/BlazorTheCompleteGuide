@@ -1,11 +1,7 @@
-﻿// DataAccess
-// Data\HotelRoom.cs
+﻿// DataAccess.Data.HotelRoom.cs
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Data
 {
@@ -27,5 +23,7 @@ namespace DataAccess.Data
         public string UpdatedBy { get; set; }
         public DateTime UpdatedDate { get; set; }
 
+        //Virtual Property for relationship - no need database migration
+        public virtual ICollection<HotelRoomImage> HotelRoomImages { get; set; }
     }
 }

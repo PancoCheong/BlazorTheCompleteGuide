@@ -1,9 +1,7 @@
-﻿using System;
+﻿// Models.HotelRoomDTO.cs
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Models
 {
@@ -18,5 +16,7 @@ namespace Models
         public double RegularRate { get; set; }
         public string Details { get; set; }
         public string SqFt { get; set; }
+        public virtual ICollection<HotelRoomImageDTO> HotelRoomImages { get; set; }
+        public List<string> ImageUrls { get; set; } //for comparing the uploaded list of image URL
     }
 }

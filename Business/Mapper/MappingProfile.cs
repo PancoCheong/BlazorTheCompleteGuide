@@ -14,6 +14,9 @@ namespace Business.Mapper
 
             //CreateMap<Employee, EmployeeDto>()
             //    .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.Name));
+
+            CreateMap<HotelRoomImageDTO, HotelRoomImage>().ReverseMap(); //support revert mapping as well
+            //CreateMap<HotelRoomImage, HotelRoomImageDTO>(); //same as .ReverseMap()
         }
     }
 }

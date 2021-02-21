@@ -1,5 +1,4 @@
-﻿// Business
-// Repository\IRepository\IHotelRoomRepository.cs
+﻿// Business.Repository.IRepository.IHotelRoomRepository.cs
 using Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,6 +12,6 @@ namespace Business.Repository.IRepository
         public Task<int> DeleteHotelRoom(int roomId);
         public Task<HotelRoomDTO> GetHotelRoom(int roomId);
         public Task<IEnumerable<HotelRoomDTO>> GetAllHotelRooms();
-        public Task<HotelRoomDTO> IsRoomUnique(string name);
+        public Task<HotelRoomDTO> IsRoomUnique(string name, int roomId = 0);
     }
 }
