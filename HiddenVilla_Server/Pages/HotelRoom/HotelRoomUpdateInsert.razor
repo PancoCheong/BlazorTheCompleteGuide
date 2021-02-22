@@ -11,6 +11,8 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JsRuntime
 @inject IFileUpload FileUpload
+@*Only Authorize User can access this page, must use AuthorizedRouteView*@
+@*@attribute [Authorize]*@
 
 <div class="row mt-2 mb-5">
     <h3 class="card-title text-info mb-3 ml-3">@Title Hotel Room</h3>
@@ -115,6 +117,8 @@
 </div>
 
 @code {
+
+
     public BlazoredTextEditor QuillHtml { get; set; } = new BlazoredTextEditor();
 
     //public void SetHTML() - this cannot be called on every rendering
@@ -132,16 +136,27 @@
 
     private bool IsImageUploadProcessStarted { get; set; } = false;
 
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationState { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
+        var authenticationState = await AuthenticationState;
+        //if (!authenticationState.User.Identity.IsAuthenticated)       // all authenticated users
+        if (!authenticationState.User.IsInRole(Common.SD.Role_Admin))   // only authenticated users with Admin role
+        {
+            var uri = new Uri(NavigationManager.Uri);
+            NavigationManager.NavigateTo($"/identity/account/login?returnUrl={uri.LocalPath}");
+        }
+
         if (Id != null)
         {
             //updating
             Title = "Update";
             HotelRoomModel = await HotelRoomRepository.GetHotelRoom(Id.Value);
             //populate the ImageUrls
-            if (HotelRoomModel?.HotelRoomImages !=null)
-            // ?. null conditional operator, if object is not null, return its property; else null. 
+            if (HotelRoomModel?.HotelRoomImages != null)
+            // ?. null conditional operator, if object is not null, return its property; else null.
             // HotelRoomModel?.HotelRoomImages <===> (HotelRoomModel != null) ? HotelRoomModel.HotelRoomImages : null
             {
                 HotelRoomModel.ImageUrls = HotelRoomModel.HotelRoomImages
@@ -204,8 +219,8 @@
 
                 var updateRoomResult = await HotelRoomRepository.UpdateHotelRoom(HotelRoomModel.Id, HotelRoomModel);
                 //add image on update page
-                if(HotelRoomModel.ImageUrls!=null && HotelRoomModel.ImageUrls.Any()
-                    || DeletedImageUrls != null && DeletedImageUrls.Any())  // fix if there is only 1 image on update page, HotelRoomModel.ImageUrls is empty after deleted 
+                if (HotelRoomModel.ImageUrls != null && HotelRoomModel.ImageUrls.Any()
+                    || DeletedImageUrls != null && DeletedImageUrls.Any())  // fix if there is only 1 image on update page, HotelRoomModel.ImageUrls is empty after deleted
                 {
                     //perform actual delete images
                     if (DeletedImageUrls != null && DeletedImageUrls.Any())
@@ -310,7 +325,7 @@
         foreach (var imageUrl in HotelRoomModel.ImageUrls)
         {
             if (HotelRoomModel.HotelRoomImages == null || //skip checking if the room is newly created and image is null
-                HotelRoomModel.HotelRoomImages.Where(x=>x.RoomImageUrl==imageUrl).Count() == 0) //check if the image URL is unique, only add new image when updating
+                HotelRoomModel.HotelRoomImages.Where(x => x.RoomImageUrl == imageUrl).Count() == 0) //check if the image URL is unique, only add new image when updating
             {
                 RoomImage = new HotelRoomImageDTO()
                 {
@@ -328,7 +343,7 @@
         {
             var imageIndex = HotelRoomModel.ImageUrls.FindIndex(x => x == imageUrl);
             var imageName = imageUrl.Replace($"{NavigationManager.BaseUri}RoomImages/", "");
-            if(HotelRoomModel.Id==0 && Title == "Create")
+            if (HotelRoomModel.Id == 0 && Title == "Create")
             {
                 //Create - file on server folder, no record in DB
                 var result = FileUpload.DeleteFile(imageName); //remove file from folder

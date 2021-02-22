@@ -1,0 +1,17 @@
+﻿@*HiddenVilla_Server\Shared\LoginDisplay.razor*@
+@*ignore the Areas and Pages in the Identity URL*@
+
+<AuthorizeView>
+    <Authorized>
+        Hello, @context.User.Identity.Name
+        <a href="Identity/Account/Logout">Logout</a>
+    </Authorized>
+    <NotAuthorized>
+        <a href="Identity/Account/Register">Register</a>
+        <a href="Identity/Account/Login">Login</a>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+}

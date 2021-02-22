@@ -7,6 +7,7 @@ using HiddenVilla_Server.Service;
 using HiddenVilla_Server.Service.IService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +32,15 @@ namespace HiddenVilla_Server
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
             );
+            // using customized setting for Identity
+            services.AddIdentity<IdentityUser, IdentityRole>()        //define to use which User and Role object
+                .AddEntityFrameworkStores<ApplicationDbContext>()     //add to EF
+                .AddDefaultTokenProviders()                           //use which Token
+                .AddDefaultUI();                                      //use default UI (can configure)
+
+            // using default setting for Identity
+            // services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //      .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddHttpContextAccessor(); //access the request URL
@@ -61,10 +71,14 @@ namespace HiddenVilla_Server
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseRouting();
+            app.UseRouting(); //Routing must before Authentication and Authorization
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages(); //for Identity
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });

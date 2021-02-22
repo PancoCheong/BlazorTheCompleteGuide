@@ -6,6 +6,8 @@
 @inject HiddenVilla_Server.Service.IService.IFileUpload FileUpload
 @inject IJSRuntime JsRuntime
 @inject NavigationManager NavigationManager
+@*Only Authorize User can access this page, must use AuthorizedRouteView*@
+@attribute [Authorize(Roles = Common.SD.Role_Admin)]
 
 <div class="row mt-4">
     <div class="col-8">
@@ -86,7 +88,7 @@
         {
             // Delete the files
             HotelRoomDTO hotelRoom = await HotelRoomRepository.GetHotelRoom(DeleteRoomId.Value); //add .Value because nullable field
-            foreach(var image in hotelRoom.HotelRoomImages)
+            foreach (var image in hotelRoom.HotelRoomImages)
             {
                 var imageName = image.RoomImageUrl.Replace($"{NavigationManager.BaseUri}RoomImages/", "");
                 FileUpload.DeleteFile(imageName);

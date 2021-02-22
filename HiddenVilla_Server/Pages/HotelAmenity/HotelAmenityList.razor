@@ -1,9 +1,13 @@
-﻿@page "/hotel-amenity"
+﻿@*Pages\HotelAmenity\HotelAmenityList.razor*@
+
+@page "/hotel-amenity"
 @using Models
 @using Business.Repository.IRepository
 @inject IAmenityRepository AmenityRepository
 @inject IJSRuntime JsRuntime
 @inject NavigationManager NavigationManager
+@*Only Authorize User can access this page, must use AuthorizedRouteView*@
+@attribute [Authorize(Roles = Common.SD.Role_Admin)]
 
 <div class="row mt-4">
     <div class="col-6">
@@ -33,24 +37,24 @@
                 {
                     foreach (var amenity in HotelAmenities)
                     {
-    <tr>
-        <td>@amenity.Name</td>
-        <td>@amenity.Timing</td>
-        <td><i class="@amenity.IconStyle"></i></td>
-        <td>
-            <NavLink href="@($"hotel-amenity/edit/{amenity.Id}")" class="btn btn-primary">Edit</NavLink>
-            <button class="btn btn-danger" @onclick="() => HandleDelete(amenity.Id)">Delete</button>
-        </td>
+                        <tr>
+                            <td>@amenity.Name</td>
+                            <td>@amenity.Timing</td>
+                            <td><i class="@amenity.IconStyle"></i></td>
+                            <td>
+                                <NavLink href="@($"hotel-amenity/edit/{amenity.Id}")" class="btn btn-primary">Edit</NavLink>
+                                <button class="btn btn-danger" @onclick="() => HandleDelete(amenity.Id)">Delete</button>
+                            </td>
 
-    </tr>
+                        </tr>
                     }
                 }
                 else
                 {
-<tr>
-    <td colspan="9">No records found</td>
-</tr>
-}
+                    <tr>
+                        <td colspan="9">No records found</td>
+                    </tr>
+                }
             </tbody>
         </table>
 
@@ -58,7 +62,7 @@
 </div>
 <DeleteConfirmation IsParentComponentProcessing="IsProcessing" ConfirmationChanged="ConfirmDelete_Click"></DeleteConfirmation>
 
-@code { 
+@code {
     internal IEnumerable<HotelAmenityDTO> HotelAmenities { get; set; } = new List<HotelAmenityDTO>();
     internal int? DeleteAmenityId { get; set; } = null;
     private bool IsProcessing { get; set; } = false;
