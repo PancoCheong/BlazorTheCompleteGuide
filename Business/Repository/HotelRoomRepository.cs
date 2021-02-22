@@ -51,13 +51,14 @@ namespace Business.Repository
                 {
                     //delete all images
                     var allImages = await _db.HotelRoomImages.Where(x => x.RoomId == roomId).ToListAsync();
-                    foreach(var image in allImages)
-                    {
-                        if(File.Exists(image.RoomImageUrl))
-                        {
-                            File.Delete(image.RoomImageUrl);
-                        }
-                    }
+                    ////the path here contains RoomImages\<guid>.jpg, cannot do deletion in here as we need to use IWebHostEnvironment
+                    //foreach(var image in allImages)
+                    //{
+                    //    if(File.Exists(image.RoomImageUrl))
+                    //    {
+                    //        File.Delete(image.RoomImageUrl);
+                    //    }
+                    //} //move delete file coding to ConfirmDelete_Click in HotelRoomList
                     _db.HotelRoomImages.RemoveRange(allImages);
 
                     _db.HotelRooms.Remove(roomDetails);

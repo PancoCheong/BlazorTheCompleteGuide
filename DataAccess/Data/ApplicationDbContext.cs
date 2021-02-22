@@ -1,4 +1,4 @@
-﻿// DataAccess\Data\ApplicationDbContext.cs
+﻿// DataAccess.Data.ApplicationDbContext.cs
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Data
@@ -11,5 +11,6 @@ namespace DataAccess.Data
 
         public DbSet<HotelRoom> HotelRooms { get; set; }
         public DbSet<HotelRoomImage> HotelRoomImages { get; set; }
+        public DbSet<HotelAmenity> HotelAmenities { get; set; }
     }
 }

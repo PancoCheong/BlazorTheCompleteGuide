@@ -5,8 +5,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Confirm Delete</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    @*@onclick="()=>OnConfirmationChange(false)">*@
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    @onclick="()=>OnConfirmationChange(false)">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -14,51 +14,43 @@
                 Are you sure you want to delete
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                    @*@onclick="()=>OnConfirmationChange(false)">*@
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    @onclick="()=>OnConfirmationChange(false)">
                     Cancel
                 </button>
-
-                <button type="button" class="btn btn-danger">
-                    Delete
-                </button>
-
-                @*
-                    @if (IsProcessStart)
-                    {
+                @if (IsProcessStart)
+                {
                     <button type="button" class="btn btn-danger"><i class="fa fa-spin fa-spinner"></i>Processing..</button>
-                    }
-                    else
-                    {
+                }
+                else
+                {
                     <button type="button" class="btn btn-danger" @onclick="()=>OnConfirmationChange(true)">
                     Delete
                     </button>
-                    }
-                *@
+                }                
             </div>
         </div>
     </div>
 </div>
 @code {
-    //public bool IsProcessStart { get; set; } = false;
+    // for recieving the Process Status from Parent
+    [Parameter]
+    public bool IsParentComponentProcessing { get; set; }
+    protected override void OnParametersSet()
+    {
+        IsProcessStart = IsParentComponentProcessing;
+    }
 
-    //[Parameter]
-    //public EventCallback<bool> ConfirmationChanged { get; set; }
-
-    //[Parameter]
-    //public bool IsParentComponentProcessing { get; set; }
-
-    //protected override void OnParametersSet()
-    //{
-    // IsProcessStart = IsParentComponentProcessing;
-    //}
-
-    //protected async Task OnConfirmationChange(bool value)
-    //{
-    // if (value)
-    // {
-    // IsProcessStart = true;
-    // }
-    // await ConfirmationChanged.InvokeAsync(value);
-    //}
+    // for event callback to invoke method on parent
+    [Parameter]
+    public EventCallback<bool> ConfirmationChanged { get; set; }
+    public bool IsProcessStart { get; set; } = false;
+    protected async Task OnConfirmationChange(bool value)
+    {
+        if (value)
+        {
+            IsProcessStart = true;
+        }
+        await ConfirmationChanged.InvokeAsync(value);
+    }
 }
